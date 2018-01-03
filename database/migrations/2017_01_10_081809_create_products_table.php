@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSoftwaresTable extends Migration
+class CreateProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,22 +13,25 @@ class CreateSoftwaresTable extends Migration
      */
     public function up()
     {
-        Schema::create('softwares', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('title');
+            $table->text('description');
+            $table->decimal('price', 8, 2);
+            $table->tinyInteger('quantity');
+            $table->boolean('visibility')->default(false);
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
-            $table->integer('category_id')->unsigned()->index();
-            $table->foreign('category_id')
+            $table->integer('ptype_id')->unsigned()->index();
+            $table->foreign('ptype_id')
                 ->references('id')
-                ->on('categories')
+                ->on('ptypes')
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
-            $table->string('name');
-            $table->text('description');
             $table->timestamps();
         });
     }
@@ -40,6 +43,6 @@ class CreateSoftwaresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('softwares');
+        Schema::dropIfExists('products');
     }
 }
